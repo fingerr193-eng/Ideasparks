@@ -1,0 +1,2271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IdeaSpark AI | Advanced Idea Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --primary-dark: #6d28d9;
+            --secondary: #8b5cf6;
+            --accent: #a78bfa;
+            --light: #f5f3ff;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray: #64748b;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-gradient: linear-gradient(45deg, #8b5cf6, #7c3aed, #6d28d9);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .logo i {
+            font-size: 2.2rem;
+            color: var(--accent);
+            background: rgba(167, 139, 250, 0.1);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        .logo h1 {
+            font-size: 2.2rem;
+            background: var(--text-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        
+        .tagline {
+            font-size: 1.1rem;
+            color: var(--accent);
+            max-width: 600px;
+            margin: 0 auto 15px;
+            line-height: 1.6;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            background: rgba(139, 92, 246, 0.15);
+            border-radius: 12px;
+            padding: 12px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        
+        @media (min-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .input-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .section-title {
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: var(--primary);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: var(--dark);
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+            color: var(--dark);
+            touch-action: manipulation;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.2);
+        }
+        
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .category {
+            background: #ede9fe;
+            color: var(--primary-dark);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            touch-action: manipulation;
+            user-select: none;
+        }
+        
+        .category:hover, .category:active {
+            background: #ddd6fe;
+        }
+        
+        .category.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--accent);
+        }
+        
+        .custom-category {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .custom-category input {
+            flex: 1;
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            touch-action: manipulation;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(109, 40, 217, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            transition: all 0.6s;
+        }
+        
+        .btn:hover::after {
+            transform: rotate(30deg) translate(20%, 20%);
+        }
+        
+        .btn i {
+            font-size: 1.2rem;
+        }
+        
+        .output-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.8s ease-out 0.2s forwards;
+            opacity: 0;
+        }
+        
+        .idea-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        
+        .idea-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .idea-title {
+            color: var(--dark);
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .idea-content {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            color: var(--dark);
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            scroll-behavior: smooth;
+            overscroll-behavior: contain;
+        }
+        
+        .idea-placeholder {
+            text-align: center;
+            color: var(--gray);
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .idea-placeholder i {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #ddd;
+            opacity: 0.7;
+        }
+        
+        .idea-placeholder h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--gray);
+        }
+        
+        .idea-placeholder p {
+            max-width: 80%;
+            margin: 0 auto;
+        }
+        
+        .idea-text {
+            line-height: 1.8;
+            font-size: 1.05rem;
+            width: 100%;
+            overflow-wrap: break-word;
+        }
+        
+        .idea-text pre {
+            white-space: pre-wrap;
+            font-family: inherit;
+            line-height: 1.6;
+        }
+        
+        .idea-text strong {
+            color: var(--primary);
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .action-btn {
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            touch-action: manipulation;
+            user-select: none;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .action-btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-execution {
+            background: var(--success);
+        }
+        
+        .btn-challenges {
+            background: var(--warning);
+        }
+        
+        .btn-monetization {
+            background: var(--secondary);
+        }
+        
+        .enhance-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: none;
+        }
+        
+        .feedback-section {
+            background: #fffbeb;
+            border-radius: 15px;
+            padding: 18px;
+            margin-top: 20px;
+            border: 1px solid #fde68a;
+            display: none;
+        }
+        
+        .feedback-title {
+            color: var(--dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .feedback-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .feedback-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            background: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            touch-action: manipulation;
+            user-select: none;
+            font-size: 0.95rem;
+        }
+        
+        .feedback-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-good {
+            color: var(--success);
+            border-color: var(--success);
+        }
+        
+        .btn-good:hover, .btn-good:active {
+            background: #ecfdf5;
+        }
+        
+        .btn-bad {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+        
+        .btn-bad:hover, .btn-bad:active {
+            background: #fef2f2;
+        }
+        
+        .loader {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(109, 40, 217, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid var(--primary);
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px 20px;
+            margin-top: 40px;
+            color: var(--accent);
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        .social-links a {
+            color: var(--accent);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Touch optimization */
+        input, button, .category, .feedback-btn {
+            min-height: 44px;
+        }
+        
+        .idea-content {
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Text animation */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.6s ease-out forwards;
+        }
+        
+        /* Scrollbar styling */
+        .idea-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .idea-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .idea-content::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+        
+        .idea-content::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+        
+        .feature-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .feature {
+            background: rgba(139, 92, 246, 0.15);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            width: 150px;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .feature i {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .feature h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .feature p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--dark);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 0.15em solid var(--primary);
+            white-space: pre-wrap;
+            letter-spacing: 0.15em;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary); }
+        }
+        
+        .api-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            color: var(--success);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-bolt"></i>
+                <h1>IdeaSpark AI</h1>
+            </div>
+            <p class="tagline">Transform your skills into innovative business ideas with AI</p>
+            <div class="api-status">
+                <i class="fas fa-check-circle"></i>
+                <span>Advanced AI Model Connected</span>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-value">5,287+</div>
+                    <div class="stat-label">Ideas Generated</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">97%</div>
+                    <div class="stat-label">User Satisfaction</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">AI Availability</div>
+                </div>
+            </div>
+            
+            <div class="feature-highlights">
+                <div class="feature">
+                    <i class="fas fa-lightbulb"></i>
+                    <h4>Creative Ideas</h4>
+                    <p>Unique business concepts</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Market Analysis</h4>
+                    <p>Real-world viability</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-rocket"></i>
+                    <h4>Fast Execution</h4>
+                    <p>Quick idea generation</p>
+                </div>
+            </div>
+        </header>
+        
+        <div class="app-container">
+            <!-- Input Section -->
+            <div class="input-section">
+                <h2 class="section-title"><i class="fas fa-user-cog"></i> Your Innovation Profile</h2>
+                
+                <div class="input-group">
+                    <label for="skills">Skills & Expertise <span class="tooltip">ℹ️
+                        <span class="tooltiptext">List your skills (e.g. Web Development, Marketing, AI)</span>
+                    </span></label>
+                    <input type="text" id="skills" placeholder="e.g. Web Development, Marketing, AI">
+                </div>
+                
+                <div class="input-group">
+                    <label for="resources">Available Resources <span class="tooltip">ℹ️
+                        <span class="tooltiptext">What resources do you have? (Budget, time, team, etc.)</span>
+                    </span></label>
+                    <input type="text" id="resources" placeholder="e.g. $5,000 budget, 3 months, team of 2">
+                </div>
+                
+                <div class="input-group">
+                    <label>Interest Categories <span class="tooltip">ℹ️
+                        <span class="tooltiptext">Select categories that interest you</span>
+                    </span></label>
+                    <div class="categories">
+                        <div class="category selected">AI Tools</div>
+                        <div class="category">SaaS</div>
+                        <div class="category">E-commerce</div>
+                        <div class="category">Mobile Apps</div>
+                        <div class="category">Education</div>
+                        <div class="category">Health Tech</div>
+                        <div class="category">Fintech</div>
+                        <div class="category">Sustainability</div>
+                        <div class="category">Social Media</div>
+                        <div class="category">Gaming</div>
+                    </div>
+                    
+                    <div class="custom-category">
+                        <input type="text" id="custom-category" placeholder="Create custom category">
+                        <button class="btn" id="add-category-btn" style="padding: 10px 15px; font-size: 0.9rem;">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+                
+                <button id="generate-btn" class="btn pulse">
+                    <i class="fas fa-bolt"></i> Generate Ideas
+                </button>
+            </div>
+            
+            <!-- Output Section -->
+            <div class="output-section">
+                <div class="idea-header">
+                    <h2 class="section-title"><i class="fas fa-magic"></i> AI-Generated Idea</h2>
+                    <div class="idea-title">ID-<span id="idea-id">001</span></div>
+                </div>
+                
+                <div class="idea-container">
+                    <div class="idea-content">
+                        <div class="idea-placeholder">
+                            <i class="fas fa-lightbulb"></i>
+                            <h3>Your AI Idea Awaits</h3>
+                            <p>Fill in your skills and resources, then click "Generate Ideas" to get your personalized business concept</p>
+                        </div>
+                        
+                        <div class="idea-text" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="action-buttons" style="display: none;">
+                        <button class="action-btn btn-execution" id="execution-btn">
+                            <i class="fas fa-play-circle"></i> Execution
+                        </button>
+                        <button class="action-btn btn-challenges" id="challenges-btn">
+                            <i class="fas fa-exclamation-triangle"></i> Challenges
+                        </button>
+                        <button class="action-btn btn-monetization" id="monetization-btn">
+                            <i class="fas fa-dollar-sign"></i> Monetization
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="enhance-section">
+                    <h2 class="section-title"><i class="fas fa-wand-magic-sparkles"></i> Enhance This Idea</h2>
+                    <div class="input-group">
+                        <input type="text" id="enhance-input" placeholder="How can we improve this idea?">
+                        <button class="btn" id="enhance-btn">
+                            <i class="fas fa-sparkles"></i> Enhance
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="feedback-section">
+                    <h3 class="feedback-title"><i class="fas fa-comment-dots"></i> Rate this idea</h3>
+                    <div class="feedback-buttons">
+                        <button class="feedback-btn btn-good" id="good-btn">
+                            <i class="fas fa-thumbs-up"></i> Useful
+                        </button>
+                        <button class="feedback-btn btn-bad" id="bad-btn">
+                            <i class="fas fa-thumbs-down"></i> Improve
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Powered by Groq AI • IdeaSpark AI v3.0</p>
+            <p>Your ideas are protected and confidential</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p>© 2024 IdeaSpark AI - Transforming Thoughts into Businesses</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Groq API configuration
+        const GROQ_API_KEY = "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";
+        const MODEL_NAME = "llama3-70b-8192";
+        let currentIdea = "";
+        let ideaCount = 1;
+        let ideasGenerated = 5287;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Category selection
+            const categories = document.querySelectorAll('.category');
+            categories.forEach(category => {
+                category.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                });
+                
+                // Touch optimization
+                category.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    this.classList.toggle('selected');
+                }, { passive: false });
+            });
+            
+            // Add custom category
+            const addCategoryBtn = document.getElementById('add-category-btn');
+            addCategoryBtn.addEventListener('click', function() {
+                const customInput = document.getElementById('custom-category');
+                const value = customInput.value.trim();
+                
+                if (value) {
+                    const newCategory = document.createElement('div');
+                    newCategory.className = 'category';
+                    newCategory.textContent = value;
+                    newCategory.addEventListener('click', function() {
+                        this.classList.toggle('selected');
+                    });
+                    
+                    document.querySelector('.categories').appendChild(newCategory);
+                    customInput.value = '';
+                }
+            });
+            
+            // Get selected categories
+            function getSelectedCategories() {
+                const selected = [];
+                document.querySelectorAll('.category.selected').forEach(cat => {
+                    selected.push(cat.textContent);
+                });
+                return selected.join(", ");
+            }
+            
+            // Generate prompt based on inputs
+            function generatePrompt() {
+                const skills = document.getElementById('skills').value || "any skills";
+                const resources = document.getElementById('resources').value || "any resources";
+                const categories = getSelectedCategories() || "any category";
+                
+                return `Generate a practical, innovative business idea for someone with: 
+Skills: ${skills}
+Resources: ${resources}
+Interests: ${categories}
+
+Structure your response as:
+Title: [Idea Name]
+Problem: [The problem it solves]
+Solution: [Detailed solution description]
+Unique Value: [What makes it stand out]
+Market Opportunity: [Potential market analysis]
+
+Make the idea realistic and implementable. Provide only the structured response without any additional text.`;
+            }
+            
+            // Enhance prompt based on feedback
+            function generateEnhancePrompt(feedback) {
+                return `Improve and enhance the following business idea based on the feedback: "${feedback}"
+
+Original Idea:
+${currentIdea}
+
+Provide an enhanced version with the following structure:
+Enhanced Title: [Improved Idea Name]
+Enhancements: [List of key improvements]
+New Solution: [Updated solution description]
+Added Value: [New unique value proposition]
+
+Make the enhanced idea more innovative and practical. Provide only the structured response without any additional text.`;
+            }
+            
+            // Generate prompt for additional details
+            function generateDetailPrompt(type) {
+                return `For the following business idea, generate detailed ${type} information:
+${currentIdea}
+
+Structure your response as:
+${type === 'execution' ? 'Execution Steps:' : type === 'challenges' ? 'Key Challenges:' : 'Monetization Strategies:'}
+[Bulleted list of 5-7 points]
+
+Provide realistic, practical advice that considers the skills and resources mentioned. Provide only the structured response without any additional text.`;
+            }
+            
+            // Call Groq API
+            async function callGroqAPI(prompt) {
+                try {
+                    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${GROQ_API_KEY}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            model: MODEL_NAME,
+                            messages: [{ role: "user", content: prompt }],
+                            temperature: 0.7,
+                            max_tokens: 1024
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    const content = data.choices[0].message.content;
+                    
+                    // Format response for better readability
+                    return content
+                        .replace(/- /g, '• ')
+                        .replace(/\*\*/g, '')
+                        .replace(/#+\s*/g, '')
+                        .replace(/(\*{1,2})(.*?)\1/g, '$2')
+                        .replace(/`{3}.*?\n([\s\S]*?)`{3}/g, '$1')
+                        .replace(/`/g, '')
+                        .replace(/\n{3,}/g, '\n\n');
+                } catch (error) {
+                    console.error("Error calling Groq API:", error);
+                    return "Error: Unable to generate content. Please try again.";
+                }
+            }
+            
+            // Display idea with animation and auto-scroll
+            function displayIdea(content) {
+                const ideaText = document.querySelector('.idea-text');
+                ideaText.innerHTML = `<pre class="typewriter">${content}</pre>`;
+                ideaText.style.display = 'block';
+                
+                // Scroll to top of content
+                const ideaContent = document.querySelector('.idea-content');
+                ideaContent.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Remove typewriter effect after animation completes
+                setTimeout(() => {
+                    ideaText.innerHTML = `<pre>${content}</pre>`;
+                }, 3500);
+            }
+            
+            // Generate button functionality
+            const generateBtn = document.getElementById('generate-btn');
+            generateBtn.addEventListener('click', async function() {
+                // Show loading state
+                const originalText = generateBtn.innerHTML;
+                generateBtn.innerHTML = '<span class="loader"></span> Generating...';
+                generateBtn.disabled = true;
+                
+                // Hide placeholder and clear previous content
+                document.querySelector('.idea-placeholder').style.display = 'none';
+                const ideaText = document.querySelector('.idea-text');
+                ideaText.style.display = 'none';
+                
+                // Hide action buttons during generation
+                document.querySelector('.action-buttons').style.display = 'none';
+                
+                // Generate and display idea
+                const prompt = generatePrompt();
+                const idea = await callGroqAPI(prompt);
+                
+                currentIdea = idea;
+                displayIdea(idea);
+                
+                // Update stats
+                ideasGenerated++;
+                document.querySelector('.stat-value').textContent = ideasGenerated + '+';
+                
+                // Update idea ID
+                document.getElementById('idea-id').textContent = String(ideaCount++).padStart(3, '0');
+                
+                // Show action buttons
+                document.querySelector('.action-buttons').style.display = 'grid';
+                
+                // Show enhance section
+                document.querySelector('.enhance-section').style.display = 'block';
+                
+                // Show feedback section
+                document.querySelector('.feedback-section').style.display = 'block';
+                
+                // Reset button
+                generateBtn.innerHTML = originalText;
+                generateBtn.disabled = false;
+            });
+            
+            // Action buttons functionality
+            document.getElementById('execution-btn').addEventListener('click', async function() {
+                const ideaText = document.querySelector('.idea-text');
+                ideaText.innerHTML = '<div class="loader" style="margin: 0 auto;"></div>';
+                ideaText.style.display = 'block';
+                
+                const prompt = generateDetailPrompt('execution');
+                const execution = await callGroqAPI(prompt);
+                displayIdea(execution);
+            });
+            
+            document.getElementById('challenges-btn').addEventListener('click', async function() {
+                const ideaText = document.querySelector('.idea-text');
+                ideaText.innerHTML = '<div class="loader" style="margin: 0 auto;"></div>';
+                ideaText.style.display = 'block';
+                
+                const prompt = generateDetailPrompt('challenges');
+                const challenges = await callGroqAPI(prompt);
+                displayIdea(challenges);
+            });
+            
+            document.getElementById('monetization-btn').addEventListener('click', async function() {
+                const ideaText = document.querySelector('.idea-text');
+                ideaText.innerHTML = '<div class="loader" style="margin: 0 auto;"></div>';
+                ideaText.style.display = 'block';
+                
+                const prompt = generateDetailPrompt('monetization');
+                const monetization = await callGroqAPI(prompt);
+                displayIdea(monetization);
+            });
+            
+            // Enhance button functionality
+            document.getElementById('enhance-btn').addEventListener('click', async function() {
+                const enhanceInput = document.getElementById('enhance-input');
+                const feedback = enhanceInput.value.trim();
+                
+                if (!feedback) {
+                    alert("Please provide enhancement feedback");
+                    return;
+                }
+                
+                // Show loading state
+                const originalText = this.innerHTML;
+                this.innerHTML = '<span class="loader"></span> Enhancing...';
+                this.disabled = true;
+                
+                const ideaText = document.querySelector('.idea-text');
+                ideaText.innerHTML = '<div class="loader" style="margin: 0 auto;"></div>';
+                ideaText.style.display = 'block';
+                
+                // Generate enhanced idea
+                const prompt = generateEnhancePrompt(feedback);
+                const enhancedIdea = await callGroqAPI(prompt);
+                
+                currentIdea = enhancedIdea;
+                displayIdea(enhancedIdea);
+                
+                // Reset button
+                this.innerHTML = originalText;
+                this.disabled = false;
+                enhanceInput.value = '';
+            });
+            
+            // Feedback buttons
+            document.getElementById('good-btn').addEventListener('click', function() {
+                this.innerHTML = '<i class="fas fa-check"></i> Thank You!';
+                this.style.background = '#ecfdf5';
+                this.style.borderColor = '#10b981';
+                document.getElementById('bad-btn').disabled = true;
+                this.disabled = true;
+            });
+            
+            document.getElementById('bad-btn').addEventListener('click', function() {
+                this.innerHTML = '<i class="fas fa-redo"></i> Will Improve!';
+                this.style.background = '#fef2f2';
+                this.style.borderColor = '#ef4444';
+                document.getElementById('good-btn').disabled = true;
+                this.disabled = true;
+            });
+            
+            // Touch optimization for buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+          <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IdeaSpark AI | Advanced Idea Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --primary-dark: #6d28d9;
+            --secondary: #8b5cf6;
+            --accent: #a78bfa;
+            --light: #f5f3ff;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray: #64748b;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-gradient: linear-gradient(45deg, #8b5cf6, #7c3aed, #6d28d9);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .logo i {
+            font-size: 2.2rem;
+            color: var(--accent);
+            background: rgba(167, 139, 250, 0.1);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        .logo h1 {
+            font-size: 2.2rem;
+            background: var(--text-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        
+        .tagline {
+            font-size: 1.1rem;
+            color: var(--accent);
+            max-width: 600px;
+            margin: 0 auto 15px;
+            line-height: 1.6;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            background: rgba(139, 92, 246, 0.15);
+            border-radius: 12px;
+            padding: 12px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        
+        @media (min-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .input-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .section-title {
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: var(--primary);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: var(--dark);
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+            color: var(--dark);
+            touch-action: manipulation;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.2);
+        }
+        
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .category {
+            background: #ede9fe;
+            color: var(--primary-dark);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            touch-action: manipulation;
+            user-select: none;
+        }
+        
+        .category:hover, .category:active {
+            background: #ddd6fe;
+        }
+        
+        .category.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--accent);
+        }
+        
+        .custom-category {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .custom-category input {
+            flex: 1;
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            touch-action: manipulation;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(109, 40, 217, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            transition: all 0.6s;
+        }
+        
+        .btn:hover::after {
+            transform: rotate(30deg) translate(20%, 20%);
+        }
+        
+        .btn i {
+            font-size: 1.2rem;
+        }
+        
+        .output-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.8s ease-out 0.2s forwards;
+            opacity: 0;
+        }
+        
+        .idea-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        
+        .idea-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .idea-title {
+            color: var(--dark);
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .idea-content {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            color: var(--dark);
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            scroll-behavior: smooth;
+            overscroll-behavior: contain;
+        }
+        
+        .idea-placeholder {
+            text-align: center;
+            color: var(--gray);
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .idea-placeholder i {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #ddd;
+            opacity: 0.7;
+        }
+        
+        .idea-placeholder h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--gray);
+        }
+        
+        .idea-placeholder p {
+            max-width: 80%;
+            margin: 0 auto;
+        }
+        
+        .idea-text {
+            line-height: 1.8;
+            font-size: 1.05rem;
+            width: 100%;
+            overflow-wrap: break-word;
+        }
+        
+        .idea-text pre {
+            white-space: pre-wrap;
+            font-family: inherit;
+            line-height: 1.6;
+        }
+        
+        .idea-text strong {
+            color: var(--primary);
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .action-btn {
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            touch-action: manipulation;
+            user-select: none;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .action-btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-execution {
+            background: var(--success);
+        }
+        
+        .btn-challenges {
+            background: var(--warning);
+        }
+        
+        .btn-monetization {
+            background: var(--secondary);
+        }
+        
+        .enhance-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: none;
+        }
+        
+        .feedback-section {
+            background: #fffbeb;
+            border-radius: 15px;
+            padding: 18px;
+            margin-top: 20px;
+            border: 1px solid #fde68a;
+            display: none;
+        }
+        
+        .feedback-title {
+            color: var(--dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .feedback-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .feedback-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            background: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            touch-action: manipulation;
+            user-select: none;
+            font-size: 0.95rem;
+        }
+        
+        .feedback-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-good {
+            color: var(--success);
+            border-color: var(--success);
+        }
+        
+        .btn-good:hover, .btn-good:active {
+            background: #ecfdf5;
+        }
+        
+        .btn-bad {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+        
+        .btn-bad:hover, .btn-bad:active {
+            background: #fef2f2;
+        }
+        
+        .loader {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(109, 40, 217, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid var(--primary);
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px 20px;
+            margin-top: 40px;
+            color: var(--accent);
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        .social-links a {
+            color: var(--accent);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Touch optimization */
+        input, button, .category, .feedback-btn {
+            min-height: 44px;
+        }
+        
+        .idea-content {
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Text animation */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.6s ease-out forwards;
+        }
+        
+        /* Scrollbar styling */
+        .idea-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .idea-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .idea-content::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+        
+        .idea-content::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+        
+        .feature-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .feature {
+            background: rgba(139, 92, 246, 0.15);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            width: 150px;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .feature i {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .feature h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .feature p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--dark);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 0.15em solid var(--primary);
+            white-space: pre-wrap;
+            letter-spacing: 0.15em;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary); }
+        }
+        
+        .api-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            color: var(--success);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-bolt"></i>
+                <h1>IdeaSpark AI</h1>
+            </div>
+            <p class="tagline">Transform your skills into innovative business ideas with AI</p>
+            <div class="api-status">
+                <i class="fas fa-check-circle"></i>
+                <span>Advanced AI Model Connected</span>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-value">5,287+</div>
+                    <div class="stat-label">Ideas Generated</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">97%</div>
+                    <div class="stat-label">User Satisfaction</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">AI Availability</div>
+                </div>
+            </div>
+            
+            <div class="feature-highlights">
+                <div class="feature">
+                    <i class="fas fa-lightbulb"></i>
+                    <h4>Creative Ideas</h4>
+                    <p>Unique business concepts</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Market Analysis</h4>
+                    <p>Real-world viability</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-rocket"></i>
+                    <h4>Fast Execution</h4>
+                    <p>Quick idea generation</p>
+                </div>
+            </div>
+        </header>
+        
+        <div class="app-container">
+            <!-- Input Section -->
+            <div class="input-section">
+                <h2 class="section-title"><i class="fas fa-user-cog"></i> Your Innovation Profile</h2>
+                
+                <div class="input-group">
+                    <label for="skills">Skills & Expertise <span class="tooltip">ℹ️
+                        <span class="tooltiptext">List your skills (e.g. Web Development, Marketing, AI)</span>
+                    </span></label>
+                    <input type="text" id="skills" placeholder="e.g. Web Development, Marketing, AI">
+                </div>
+                
+                <div class="input-group">
+                    <label for="resources">Available Resources <span class="tooltip">ℹ️
+                        <span class="tooltiptext">What resources do you have? (Budget, time, team, etc.)</span>
+                    </span></label>
+                    <input type="text" id="resources" placeholder="e.g. $5,000 budget, 3 months, team of 2">
+                </div>
+                
+                <div class="input-group">
+                    <label>Interest Categories <span class="tooltip">ℹ️
+                        <span class="tooltiptext">Select categories that interest you</span>
+                    </span></label>
+                    <div class="categories">
+                        <div class="category selected">AI Tools</div>
+                        <div class="category">SaaS</div>
+                        <div class="category">E-commerce</div>
+                        <div class="category">Mobile Apps</div>
+                        <div class="category">Education</div>
+                        <div class="category">Health Tech</div>
+                        <div class="category">Fintech</div>
+                        <div class="category">Sustainability</div>
+                        <div class="category">Social Media</div>
+                        <div class="category">Gaming</div>
+                    </div>
+                    
+                    <div class="custom-category">
+                        <input type="text" id="custom-category" placeholder="Create custom category">
+                        <button class="btn" id="add-category-btn" style="padding: 10px 15px; font-size: 0.9rem;">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+                
+                <button id="generate-btn" class="btn pulse">
+                    <i class="fas fa-bolt"></i> Generate Ideas
+                </button>
+            </div>
+            
+            <!-- Output Section -->
+            <div class="output-section">
+                <div class="idea-header">
+                    <h2 class="section-title"><i class="fas fa-magic"></i> AI-Generated Idea</h2>
+                    <div class="idea-title">ID-<span id="idea-id">001</span></div>
+                </div>
+                
+                <div class="idea-container">
+                    <div class="idea-content">
+                        <div class="idea-placeholder">
+                            <i class="fas fa-lightbulb"></i>
+                            <h3>Your AI Idea Awaits</h3>
+                            <p>Fill in your skills and resources, then click "Generate Ideas" to get your personalized business concept</p>
+                        </div>
+                        
+                        <div class="idea-text" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="action-buttons" style="display: none;">
+                        <button class="action-btn btn-execution" id="execution-btn">
+                            <i class="fas fa-play-circle"></i> Execution
+                        </button>
+                        <button class="action-btn btn-challenges" id="challenges-btn">
+                            <i class="fas fa-exclamation-triangle"></i> Challenges
+                        </button>
+                        <button class="action-btn btn-monetization" id="monetization-btn">
+                            <i class="fas fa-dollar-sign"></i> Monetization
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="enhance-section">
+                    <h2 class="section-title"><i class="fas fa-wand-magic-sparkles"></i> Enhance This Idea</h2>
+                    <div class="input-group">
+                        <input type="text" id="enhance-input" placeholder="How can we improve this idea?">
+                        <button class="btn" id="enhance-btn">
+                            <i class="fas fa-sparkles"></i> Enhance
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="feedback-section">
+                    <h3 class="feedback-title"><i class="fas fa-comment-dots"></i> Rate this idea</h3>
+                    <div class="feedback-buttons">
+                        <button class="feedback-btn btn-good" id="good-btn">
+                            <i class="fas fa-thumbs-up"></i> Useful
+                        </button>
+                        <button class="feedback-btn btn-bad" id="bad-btn">
+                            <i class="fas fa-thumbs-down"></i> Improve
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Powered by Groq AI • IdeaSpark AI v3.0</p>
+            <p>Your ideas are protected and confidential</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p>© 2024 IdeaSpark AI - Transforming Thoughts into Businesses</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Groq API configuration
+        const GROQ_API_KEY = "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";
+        const MODEL_NAME = "llama3-70b-8192";
+        let currentIdea = "";
+        let ideaCount = 1;
+        let ideasGenerated = 5287;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Category selection
+            const categories = document.querySelectorAll('.category');
+            categories.forEach(category => {
+                category.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                });
+                
+                // Touch optimization
+                category.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    this.classList.toggle('selected');
+                }, { passive: false });
+            });
+            
+            // Add custom category
+            const addCategoryBtn = document.getElementById('add-category-btn');
+            addCategoryBtn.addEventListener('click', function() {
+                const customInput = document.getElementById('custom-category');
+                const value = customInput.value.trim();
+                
+                if (value) {
+                    const newCategory = document.createElement('div');
+                    newCategory.className = 'category';
+                    newCategory.textContent = value;
+                    newCategory.addEventListener('click', function() {
+                        this.classList.toggle('selected');
+                    });
+                    
+                    document.querySelector('.categories').appendChild(newCategory);
+                    customInput.value = '';
+                }
+            });
+            
+            // Get selected categories
+            function getSelectedCategories() {
+                const selected = [];
+                document.querySelectorAll('.category.selected').forEach(cat => {
+                    selected.push(cat.textContent);
+                });
+                return selected.join(", ");
+            }
+            
+            // Generate prompt based on inputs
+            function generatePrompt() {
+                const skills = document.getElementById('skills').value || "any skills";
+                const resources = document.getElementById('resources').value || "any resources";
+                const categories = getSelectedCategories() || "any category";
+                
+                return `Generate a practical, innovative business idea for someone with: 
+Skills: ${skills}
+Resources: ${resources}
+Interests: ${categories}
+
+Structure your response as:
+Title: [Idea Name]
+Problem: [The problem it solves]
+Solution: [Detailed solution description]
+Unique Value: [What makes it stand out]
+Market Opportunity: [Potential market analysis]
+
+Make the idea realistic and implementable. Provide only the structured response without any additional text.`;
+            }
+            
+            // Enhance prompt based on feedback
+            function generateEnhancePrompt(feedback) {
+                return `Improve and enhance the following business idea based on the feedback: "${feedback}"
+
+Original Idea:
+${currentIdea}
+
+Provide an enhanced version with the following structure:
+Enhanced Title: [Improved Idea Name]
+Enhancements: [List of key improvements]
+New Solution: [Updated solution description]
+Added Value: [New unique value proposition]
+
+Make the enhanced idea more innovative and practical. Provide only the structured response without any additional text.`;
+            }
+            
+            // Generate prompt for additional details
+            function generateDetailPrompt(type) {
+                return `For the following business idea, generate detailed ${type} information:
+${currentIdea}
+
+Structure your response as:
+${type === 'execution' ? 'Execution Steps:' : type === 'challenges' ? 'Key Challenges:' : 'Monetization Strategies:'}
+[Bulleted list of 5-7 points]
+
+Provide realistic, practical advice that considers the skills and resources mentioned. Provide only the structured response without any additional text.`;
+            }
+            
+            // Call Groq API
+            async function callGroqAPI(prompt) {
+                try {
+                    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${GROQ_API_KEY}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            model: MODEL_NAME,
+                            messages: [{ role: "user", content: prompt }],
+                            temperature: 0.7,
+                            max_tokens: 1024
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    const content = data.choices[0].message.content;
+                    
+                    // Format response for better readability
+                    return content
+                        .replace(/- /g, '• ')
+                        .replace(/\*\*/g, '')
+                        .replace(/#+\s*/g, '')
+                        .replace(/(\*{1,2})(.*?)\1/g, '$2')
+                        .replace(/`{3}.*?\n([\s\S]*?)`{3}/g, '$1')
+                        .replace(/`/g, '')
+                        .replace(/\n{3,}/g, '\n\n');
+                } catch (error) {
+                    console.error("Error calling Groq API:", error);
+                    return "Error: Unable to generate content. Please try again.";
+                }
+            }
+            
+            // Display idea with animation and auto-scroll
+            function displayIdea(content) {
+                const ideaText = document.querySelector('.idea-text');
+                ideaText.innerHTML = `<pre class="typewriter">${content}</pre>`;
+                ideaText.style.display = 'block';
+                
+                // Scroll to top of content
+                const ideaContent = document.querySelector('.idea-content');
+                ideaContent.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Remove typewriter effect after animation completes
+                setTimeout(() => {
+                    ideaText.innerHTML = `<pre>${content}</pre>`;
+                }, 3500);
+            }
+            
+            // Generate button functionality
+            const generateBtn = document.getElementById('generate-btn');
+            generateBtn.addEventListener('click', async function() {
+                // Show loading state
+                const originalText = generateBtn.innerHTML;
+                generateBtn.innerHTML = '<span class="loader"></span> Generating...';
+                generateBtn.disabled = true;
+                
+                // Hide placeholder and clear previous content
+                document.querySelector('.idea-placeholder').style.display = 'none';
+                const ideaText = document.querySelector('.idea-text');
+                ideaText.style.display = 'none';
+                
+                // Hide action buttons during generation
+                document.querySelector('.action-buttons').style.display = 'none';
+                
+                // Generate and display idea
+                const prompt = generatePrompt();
+                const idea = await callGroqAPI(prompt);
+                
+                currentIdea = idea;
+                displayIdea(idea);
+                
+                // Update stats
+                ideasGenerated++;
+                document.querySelector('.stat-value').textContent = ideasGenerated + '+';
+                
+                // Update idea ID
+                document.getElementById('idea-id').textContent = String(ideaCount++).padStart(3, '0');
+                
+                // Show action buttons
+                document.querySelector('.action-buttons').style.display = 'grid';
+                
+                // Show enhance section
+                document.querySelector('.enhance-section').style.display = 'block';
+                
+                // Show feedback section
+                document.querySelector('.feedback-section').style.display = 'block';
+                
+                // Reset button
+                generateBtn.innerHTML = originalText;
+                generateBtn.disabled = false;
+            });
+            
+            // Action buttons functionality
+            document.getElementById('execution-btn').addEventListener('click', async function() {
+                const ideaText = document.querySelector('.idea-text');
+                ideaText.innerHTML = '<div class="loader" style="margin: 0 auto;"></div>';
+                ideaText.style.display = 'block';
+                
+                const prompt = generateDetailPrompt('execution');
+                const execution = await callGroqAPI(prompt);
+                displayIdea(execution);
+            });
+            
+            document.getElementById('challenges-btn').addEventListener('click', async function() {
+                const ideaText = document.querySelector('.idea-text');
+                ideaText.innerHTML = '<div class="loader" style="margin: 0 auto;"></div>';
+                ideaText.style.display = 'block';
+                
+                const prompt = generateDetailPrompt('challenges');
+                const challenges = await callGroqAPI(prompt);
+                displayIdea(challenges);
+            });
+            
+            document.getElementById('monetization-btn').addEventListener('click', async function() {
+                const ideaText = document.querySelector('.idea-text');
+                ideaText.innerHTML = '<div class="loader" style="margin: 0 auto;"></div>';
+                ideaText.style.display = 'block';
+                
+                const prompt = generateDetailPrompt('monetization');
+                const monetization = await callGroqAPI(prompt);
+                displayIdea(monetization);
+            });
+            
+            // Enhance button functionality
+            document.getElementById('enhance-btn').addEventListener('click', async function() {
+                const enhanceInput = document.getElementById('enhance-input');
+                const feedback = enhanceInput.value.trim();
+                
+                if (!feedback) {
+                    alert("Please provide enhancement feedback");
+                    return;
+                }
+                
+                // Show loading state
+                const originalText = this.innerHTML;
+                this.innerHTML = '<span class="loader"></span> Enhancing...';
+                this.disabled = true;
+                
+                const ideaText = document.querySelector('.idea-text');
+                ideaText.innerHTML = '<div class="loader" style="margin: 0 auto;"></div>';
+                ideaText.style.display = 'block';
+                
+                // Generate enhanced idea
+                const prompt = generateEnhancePrompt(feedback);
+                const enhancedIdea = await callGroqAPI(prompt);
+                
+                currentIdea = enhancedIdea;
+                displayIdea(enhancedIdea);
+                
+                // Reset button
+                this.innerHTML = originalText;
+                this.disabled = false;
+                enhanceInput.value = '';
+            });
+            
+            // Feedback buttons
+            document.getElementById('good-btn').addEventListener('click', function() {
+                this.innerHTML = '<i class="fas fa-check"></i> Thank You!';
+                this.style.background = '#ecfdf5';
+                this.style.borderColor = '#10b981';
+                document.getElementById('bad-btn').disabled = true;
+                this.disabled = true;
+            });
+            
+            document.getElementById('bad-btn').addEventListener('click', function() {
+                this.innerHTML = '<i class="fas fa-redo"></i> Will Improve!';
+                this.style.background = '#fef2f2';
+                this.style.borderColor = '#ef4444';
+                document.getElementById('good-btn').disabled = true;
+                this.disabled = true;
+            });
+            
+            // Touch optimization for buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.addEventListener('touchstart', function() {
+                    this.classList.add('active');
+                });
+                
+                btn.addEventListener('touchend', function() {
+                    this.classList.remove('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>      btn.addEventListener('touchstart', function() {
+                    this.classList.add('active');
+                });
+                
+                btn.addEventListener('touchend', function() {
+                    this.classList.remove('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
